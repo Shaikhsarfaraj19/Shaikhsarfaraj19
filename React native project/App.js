@@ -1,78 +1,69 @@
-import { SafeAreaView, StatusBar, View, StyleSheet, FlatList, Text } from "react-native";
-import { useState, useEffect } from "react";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-export default function App() {
+const App = () => {
+  const [count, setCount] = useState(0); // Initialize the count state to 0
 
-  const [postList, setPostList] = useState([]);
-
-  const fetchData = async (limit = 10) => {
-    
-      const response = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${limit}`);
-      const data = await response.json();
-      setPostList(data); // Update the postList state with the fetched data
+  const incrementCount = () => {
+    setCount(count + 1); // Update the count by adding 1
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const decrementCount = () => {
+   
+      setCount(count - 1); // Update the count by subtracting 1
+  
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.listContainer}>
-        <FlatList
-          data={postList}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.card}>
-                <Text style={styles.titleText}>{item.title}</Text>
-                <Text style={styles.bodyText}>{item.body}</Text>
-              </View>
-            );
-          }}
-          ItemSeparatorComponent={() => <View style={{ height: 16 }} />} // Add some space between the items
-          ListEmptyComponent={<Text style={styles.headerText}>No Posts Found</Text>}
-          ListHeaderComponent={<Text style={styles.headerText}>Posts</Text>}
-          ListFooterComponent={<Text style={styles.headerText}>End of Posts</Text>}
-        />
+    <View style={styles.subcontainer}>
+      <Text style={styles.title}>Counter App</Text>
+      <Text style={styles.counterText}>{count}</Text>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={incrementCount}>
+          <Text style={styles.buttonText}>Increment</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={decrementCount}>
+          <Text style={styles.buttonText}>Decrement</Text>
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
+  subcontainer: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
-    paddingTop: StatusBar.currentHeight,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  listContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  card: {
-    backgroundColor: "white",
-    padding: 16,
-    borderRadius: 10,
-    borderWidth: 1,
-    marginBottom: 10, // Added margin to separate cards
-  },
-  titleText: {
-    fontSize: 20, // Adjusted font size for readability
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 20,
   },
-  bodyText: {
-    fontSize: 16,
-    color: "#666666",
+  counterText: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    marginBottom: 30,
   },
-  headerText: {
-    fontSize: 24,
-    textAlign: 'center',
-    maarbottm: 12,
+  buttonContainer: {
+    flexDirection: 'row',
   },
-  fotterText: {
-    fontSize: 24,
-    textAlign: 'center',
-    marginTop: 12,
-  }
+  button: {
+    backgroundColor: 'blue',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    marginHorizontal: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
 });
+
+export default App;
